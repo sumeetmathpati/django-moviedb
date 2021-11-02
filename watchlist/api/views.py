@@ -51,7 +51,7 @@ class PlatformListAPI(APIView):
     """
     def get(self, request):
         platforms = Platform.objects.all()
-        serializer = PlatformSerializer(platforms, many=True)
+        serializer = PlatformSerializer(platforms, many=True, context={'request': request})
         return Response(serializer.data)
 
     def post(self, request):
@@ -70,7 +70,7 @@ class PlatformDetailsAPI(APIView):
             platform = Platform.objects.get(id=pk)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        selializer = PlatformSerializer(platform)
+        selializer = PlatformSerializer(platform, context={'request': request})
         return Response(selializer.data)
 
     def put(self, request, pk):

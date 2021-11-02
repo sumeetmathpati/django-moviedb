@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from watchlist.models import Media, Platform
 
+
 class MediaSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -9,10 +10,14 @@ class MediaSerializer(serializers.ModelSerializer):
         # fields = ['id', 'name', 'description']
         # exclude = ['description'] 
         
-class PlatformSerializer(serializers.ModelSerializer):
+class PlatformSerializer(serializers.HyperlinkedModelSerializer):
+    
+    media = MediaSerializer(many=True, read_only=True)
+
     class Meta:
         model = Platform
-        fields = '__all__'
+        fields = '__all__'  
+    
 
 # class MovieSerializer(serializers.Serializer):
 #     id = serializers.CharField(read_only=True)
