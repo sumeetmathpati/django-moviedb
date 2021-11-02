@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-
+from django.contrib.auth.models import User
 
 class Platform(models.Model):
     name = models.CharField(max_length=63)
@@ -16,16 +16,17 @@ class Media(models.Model):
     description = models.CharField(max_length=255, null=True, blank=True)
     rating = models.IntegerField(null=True, blank=True)
     released_date = models.DateField()
-    platform = models.ForeignKey(Platform, on_delete=models.CASCADE, related_name="media", null=True, blank=True)
+    platform = models.ForeignKey(Platform, on_delete=models.CASCADE, null=True, blank=True, related_name='media')
 
 
     def __str__(self):
         return self.name
 
 class Review(models.Model):
-    rating = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)])
-    description = models.TextField()
-    media = models.OneToOneField(Media, blank=True, null=True, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    rating = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)], null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    media = models.ForeignKey(Media, blank=True, null=True, on_delete=models.CASCADE, related_name='reviews')
     created = models.DateField(auto_now_add=True)
 
     def _str__(self):

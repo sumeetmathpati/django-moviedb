@@ -1,13 +1,23 @@
 from rest_framework import serializers
-from watchlist.models import Media, Platform
+from watchlist.models import Media, Platform, Review
 
+class ReviewSerializer(serializers.ModelSerializer):
+
+    author = serializers.StringRelatedField()
+
+    class Meta:
+        model = Review
+        fields = '__all__'
+        # exclude = ['media']
 
 class MediaSerializer(serializers.ModelSerializer):
+
+    reviews = ReviewSerializer(many=True, read_only=True)
 
     class Meta:
         model = Media
         fields = '__all__'
-        # fields = ['id', 'name', 'description']
+        # fields = ['id', 'name', 'description', 'reviews']
         # exclude = ['description'] 
         
 class PlatformSerializer(serializers.HyperlinkedModelSerializer):
@@ -16,7 +26,8 @@ class PlatformSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Platform
-        fields = '__all__'  
+        fields = '__all__' 
+        # fields = ['name', 'about', 'website', 'media'] 
     
 
 # class MovieSerializer(serializers.Serializer):

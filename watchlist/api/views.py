@@ -4,8 +4,14 @@ from rest_framework.decorators import APIView
 from watchlist.models import Media, Platform
 from .serializers import MediaSerializer, PlatformSerializer
 from rest_framework import status
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class MediaListAPI(APIView):
+
+    authentication_classes = [SessionAuthentication, BasicAuthentication, JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         media = Media.objects.all()
