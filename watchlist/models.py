@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Platform(models.Model):
@@ -20,3 +21,13 @@ class Media(models.Model):
 
     def __str__(self):
         return self.name
+
+class Review(models.Model):
+    rating = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)])
+    description = models.TextField()
+    media = models.OneToOneField(Media, blank=True, null=True, on_delete=models.CASCADE)
+    created = models.DateField(auto_now_add=True)
+
+    def _str__(self):
+        return str(self.rating) + ": " + media.title
+    
