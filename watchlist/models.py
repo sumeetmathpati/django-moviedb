@@ -1,10 +1,21 @@
 from django.db import models
 
-class Movie(models.Model):
+
+class Platform(models.Model):
+    name = models.CharField(max_length=63)
+    about = models.CharField(max_length=255, null=True, blank=True)
+    website = models.URLField(max_length=255, null=True, blank=True)
+
+    def __str__(self): 
+        return self.name
+
+class Media(models.Model):
 
     name = models.CharField(max_length=63)
     description = models.CharField(max_length=255, null=True, blank=True)
     rating = models.IntegerField(null=True, blank=True)
+    released_date = models.DateField()
+
 
     def __str__(self):
         return self.name

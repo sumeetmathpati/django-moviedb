@@ -1,39 +1,39 @@
 from rest_framework.response import Response
 # from rest_framework.decorators import api_view
 from rest_framework.decorators import APIView
-from watchlist.models import Movie
-from .serializers import MovieSerializer
+from watchlist.models import Media, Platform
+from .serializers import MediaSerializer, PlatformSerializer
 from rest_framework import status
 
-class MovieListAPI(APIView):
+class MediaListAPI(APIView):
 
     def get(self, request):
-        movies = Movie.objects.all()
-        serializer = MovieSerializer(movies, many=True)
+        media = Media.objects.all()
+        serializer = MediaSerializer(media, many=True)
         return Response(serializer.data)
         
 
     def post(self, request):   
-        serializer = MovieSerializer(data=request.data)
+        serializer = MediaSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)
         else: 
             return Response(serializer.errors) 
 
-class MovieDetailAPI(APIView): 
+class MediaDetailAPI(APIView): 
     
     def get(self, request, pk):
         try:
-            movie = Movie.objects.get(id=pk)
+            media = Media.objects.get(id=pk)
         except:
-            return Response({'Error': 'Movie not found!'}, status=status.HTTP_404_NOT_FOUND)
-        serializer = MovieSerializer(movie)
+            return Response({'Error': 'Media not found!'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = MediaSerializer(media)
         return Response(serializer.data)
 
     def put(self, request, pk):   
-        movie = Movie.objects.get(id=pk)
-        serializer = MovieSerializer(movie, data=request.data)
+        media = Media.objects.get(id=pk)
+        serializer = MediaSerializer(media, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -41,11 +41,49 @@ class MovieDetailAPI(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        movie = Movie.objects.get(pk=pk)
-        movie.delete()
+        media = Media.objects.get(id=pk)
+        media.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class PlatformListAPi(APIView):
 
+    def get(self, request):
+        platforms = Platform.objects.all()
+        serializer = PlatformSerializer(platforms, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = Platformserializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Responze(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class PlatformDetailsAPI(APIView):
+
+    def get(self, request, pk):
+
+        try:
+            platform = Platform.objects.get(id=pk)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        selializer = PlatformSerializer(platform)
+        return Response(selializer.data)
+
+    def put(self, request, pk):
+        platform = Media.objects.get(id=pk)
+        serializer = Platformserializer(platform, request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        platoform = Platform.get(id = pk)
+        platform.delete()
+        return Responsse(status=status.HTTP_204_NO_CONTENT)
 
 # @api_view(['GET', 'POST'])
 # def movie_list(request):

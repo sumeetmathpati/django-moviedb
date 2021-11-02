@@ -1,37 +1,18 @@
 from rest_framework import serializers
-from watchlist.models import Movie
+from watchlist.models import Media, Platform
 
-def name_length(value): 
-    
-    if len(value) < 2:
-         raise serializers.ValidationError('Name is too short!')
-
-class MovieSerializer(serializers.ModelSerializer):
-
-    len_name = serializers.SerializerMethodField()
-    name = serializers.CharField(validators=[name_length])
+class MediaSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Movie
+        model = Media
         fields = '__all__'
         # fields = ['id', 'name', 'description']
         # exclude = ['description'] 
-
-    def get_len_name(self, object):
-        return len(object.name)
-
-    # def validate_name(self, value):
-
-    #     if len(value) < 2:
-    #         raise serializers.ValidationError('Name is too short!')
         
-    #     return value
-    
-    def validate(self, data):
-        if data['name'] == data['description']:
-            raise serializers.ValidationError('Name and description must not be same!')
-        
-        return data
+class PlatformSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Platform
+        fields = '__all__'
 
 # class MovieSerializer(serializers.Serializer):
 #     id = serializers.CharField(read_only=True)
