@@ -15,6 +15,7 @@ class Media(models.Model):
     description = models.CharField(max_length=255, null=True, blank=True)
     rating = models.IntegerField(null=True, blank=True)
     released_date = models.DateField()
+    platform = models.ForeignKey(Platform, on_delete=models.CASCADE, related_name="media", null=True, blank=True)
 
 
     def __str__(self):

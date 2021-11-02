@@ -45,18 +45,20 @@ class MediaDetailAPI(APIView):
         media.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class PlatformListAPi(APIView):
-
+class PlatformListAPI(APIView):
+    """
+    List all code platforms, or create a new platform.
+    """
     def get(self, request):
         platforms = Platform.objects.all()
         serializer = PlatformSerializer(platforms, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = Platformserializer(data=request.data)
+        serializer = PlatformSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Responze(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
